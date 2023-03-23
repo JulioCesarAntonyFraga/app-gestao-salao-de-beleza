@@ -1,24 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useContext, useEffect } from 'react';
+import Layout  from './Components/Layout';
+import PrivateRoutes  from './Components/PrivateRoutes';
+import PublicRoutes  from './Components/PublicRoutes';
+import { BrowserRouter } from "react-router-dom";
+import { Layout as AntdLayout } from 'antd';
+import AuthContext from './Contexts/Auth';
 
 function App() {
+  const {setUser, setToken, setRefreshToken, signed} = useContext(AuthContext);
+
+  useEffect(() => {
+    const loadStorageData = async () => {
+        const storageUser = JSON.parse(localStorage.getItem('User'));
+        const storageToken = localStorage.getItem("Token");
+        const storageRefreshToken = localStorage.getItem("RefreshToken");
+
+        if(storageToken && storageUser && storageRefreshToken){
+            setUser(storageUser);
+            setToken(storageToken);
+            setRefreshToken(storageRefreshToken);
+        }
+    };
+    loadStorageData();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+        {signed ? 
+          <Layout>
+              <AntdLayout style={{padding: '30px'}}>
+                <PrivateRoutes />
+              </AntdLayout>
+          </Layout> : <PublicRoutes />
+        }
+    </BrowserRouter>
   );
 }
 
