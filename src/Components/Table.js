@@ -1,6 +1,6 @@
 import { Table } from 'antd';
 import { Popconfirm } from 'antd';
-import { CheckCircleTwoTone, CloseCircleTwoTone, EditTwoTone, DeleteTwoTone, CopyOutlined } from '@ant-design/icons';
+import { CheckCircleTwoTone, CloseCircleTwoTone, InfoCircleOutlined, DeleteTwoTone, CopyOutlined } from '@ant-design/icons';
 
 function generateTable(dataList, fieldsList, loading, handleDelete, handleEdit, successMessage) {
 
@@ -79,7 +79,7 @@ function generateTable(dataList, fieldsList, loading, handleDelete, handleEdit, 
     key: 'actions',
     render: (text, record) => (
       <>
-        <EditTwoTone twoToneColor="#ede768" style={{fontSize: '20px', marginRight: '20px'}} onClick={() => handleEdit(record.id)} />
+        <InfoCircleOutlined style={{fontSize: '20px', marginRight: '20px'}} onClick={() => handleEdit(record.id)} />
         <Popconfirm
           title="Tem certeza que deseja excluir este registro?"
           onConfirm={() => handleDelete(record.id)}
@@ -95,7 +95,7 @@ function generateTable(dataList, fieldsList, loading, handleDelete, handleEdit, 
   columns.push(actionColumn);
 
   return (
-    <Table dataSource={dataList} columns={columns} loading={loading} />
+    <Table dataSource={dataList} columns={columns} loading={loading} responsive pagination={{ pageSize: 10 }} scroll={{ x: 'max-content' }} />
   );
 }
 
